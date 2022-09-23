@@ -40,7 +40,7 @@ export class Irc implements INodeType {
 		outputs: ['main'],
 		credentials: [
 			{
-				name: 'ircApi',
+				name: 'IrcApi',
 				required: true,
 			},
 		],
