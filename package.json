@@ -30,7 +30,7 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/Irc.credentials.js"
+      "dist/credentials/IrcApi.credentials.js"
     ],
     "nodes": [
       "dist/nodes/Irc/Irc.node.js"

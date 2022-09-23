@@ -10,7 +10,6 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
-	LoggerProxy as Logger,
 	NodeApiError,
 	NodeOperationError,
 } from 'n8n-workflow';
@@ -40,7 +39,7 @@ export class Irc implements INodeType {
 		outputs: ['main'],
 		credentials: [
 			{
-				name: 'IrcApi',
+				name: 'ircApi',
 				required: true,
 			},
 		],
@@ -165,7 +164,7 @@ export class Irc implements INodeType {
 		const items = this.getInputData();
 		const resource = this.getNodeParameter('resource', 0) as string;
 		const operation = this.getNodeParameter('operation', 0) as string;
-		const credentials = await this.getCredentials('irc') as IDataObject;
+		const credentials = await this.getCredentials('ircApi') as IDataObject;
 
 		if (credentials === undefined) {
 			throw new NodeOperationError(this.getNode(), 'No credentials got returned!');
@@ -204,7 +203,7 @@ export class Irc implements INodeType {
 				const sentLines: string[] = [];
 
 				// connect
-				Logger.verbose('IRC connecting.');
+				// Logger.verbose('IRC connecting.');
 				if (credentials.tls as boolean) {
 					const tlsConnectionOptions = {
 						port: credentials.tlsPort as number,
@@ -225,7 +224,7 @@ export class Irc implements INodeType {
 				}
 
 				client.on('connected', () => {
-					Logger.verbose('IRC connection established, now sending messages.');
+					// Logger.verbose('IRC connection established, now sending messages.');
 					if (joinChannel) {
 						client.send('JOIN', channelName, channelKey);
 					}
@@ -256,11 +255,11 @@ export class Irc implements INodeType {
 				});
 
 				// return when we're disconnected
-				Logger.verbose('Waiting until IRC connection closes.');
+				// Logger.verbose('Waiting until IRC connection closes.');
 				await client.runUntilClosed();
 
 				const statusInfo = client.statusInfo();
-				Logger.verbose(`IRC connection closed, returned error message is [${statusInfo.error}].`);
+				// Logger.verbose(`IRC connection closed, returned error message is [${statusInfo.error}].`);
 				if (statusInfo.error) {
 					if (this.continueOnFail()) {
 						outputInfo.error = statusInfo.error;
